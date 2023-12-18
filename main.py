@@ -59,15 +59,15 @@ async def respond(request: Request):
             Welcome to EhrenAI, your very own Telegram conversational AI developed by Ehren Nwokocha with Meta's Blenderbot400M model.
         """
         print(bot_welcome)
-        await bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message=msg_id)
+        await bot.sendMessage(chat_id=chat_id, text=bot_welcome)
     else:
         try:
             print("generating image")
             text = re.sub(r"\W", "_", text)
             url = "https://api.adorable.io/avatars/285/{}.png".format(text.strip())
-            await bot.sendPhoto(chat_id=chat_id, photo=url, reply_to_message=msg_id)
+            await bot.sendPhoto(chat_id=chat_id, photo=url)
         except Exception:
-            await bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name", reply_to_message_id=msg_id)
+            await bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name")
     return 'ok'
             
 
