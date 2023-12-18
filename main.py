@@ -47,26 +47,26 @@ async def set_webhook():
 
 @app.post('/{}'.format(TOKEN))
 async def respond(request: Request):
-    update = await telegram.Update.de_json(await request.json(), bot)
+    update = telegram.Update.de_json(await request.json(), bot)
     
-    chat_id = await update.message.chat.id
-    msg_id = await update.message.message_id
+    chat_id = update.message.chat.id
+    msg_id = update.message.message_id
     
-    text = await update.message.text.encode('utf-8').decode()
+    text = update.message.text.encode('utf-8').decode()
     print("got message: ", text)
     if text == "/start":
         bot_welcome = """
             Welcome to EhrenAI, your very own Telegram conversational AI developed by Ehren Nwokocha with Meta's Blenderbot400M model.
         """
         
-        await bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message=msg_id)
+        bot.sendMessage(chat_id=chat_id, text=bot_welcome, reply_to_message=msg_id)
     else:
         try:
             text = re.sub(r"\W", "_", text)
             url = "https://api.adorable.io/avatars/285/{}.png".format(text.strip())
-            await bot.sendPhoto(chat_id=chat_id, photo=url, reply_to_message=msg_id)
+            bot.sendPhoto(chat_id=chat_id, photo=url, reply_to_message=msg_id)
         except Exception:
-            await bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name", reply_to_message_id=msg_id)
+            bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name", reply_to_message_id=msg_id)
     return 'ok'
             
 
