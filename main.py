@@ -62,14 +62,11 @@ async def respond(request: Request):
 But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releases. Want a chat? I'm all ears! 🤗✨"""
         await bot.sendMessage(chat_id=chat_id, text=bot_welcome)
     else:
-        try:
-            if await httpx.get('https://ehren12-critzyblenderbot.hf.space/status').json.status == "OK":
-                text = re.sub(r"\W", "_", text)
-                r = await httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
-                response = r.text[1:-1]
-                await bot.sendMessage(chat_id=chat_id, text=response)            
-            else:
-                raise Exception
+        try:     
+            text = re.sub(r"\W", "_", text)
+            r = await httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
+            response = r.text[1:-1]
+            await bot.sendMessage(chat_id=chat_id, text=response)            
         except Exception:
             await bot.sendMessage(chat_id=chat_id, text="Oh no! 😕 It seems like I've hit a little bump in the digital road. 🛠️ My message-generating powers seem to be on a coffee break! ☕ Something's a bit wonky with the servers. Please bear with me while my developer works his magic to get things back on track. 🤞 Sorry for the inconvenience! 😥")
     return 'ok'
