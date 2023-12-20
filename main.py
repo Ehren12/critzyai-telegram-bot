@@ -67,7 +67,8 @@ But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releas
             r = await httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
             response = r.text[1:-1]
             await bot.sendMessage(chat_id=chat_id, text=response)            
-        except Exception:
+        except httpx.ConnectTimeout as exc:
+            print(f"HTTP Exception for {exc.request.url} - {exc}")
             await bot.sendMessage(chat_id=chat_id, text="Oh no! 😕 It seems like I've hit a little bump in the digital road. 🛠️ My message-generating powers seem to be on a coffee break! ☕ Something's a bit wonky with the servers. Please bear with me while my developer works his magic to get things back on track. 🤞 Sorry for the inconvenience! 😥")
     return 'ok'
     
