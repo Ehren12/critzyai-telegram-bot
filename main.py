@@ -6,6 +6,8 @@ import os
 import re
 from starlette.middleware.cors import CORSMiddleware
 
+import httpx
+
 load_dotenv()
 
 global TOKEN
@@ -55,21 +57,23 @@ async def respond(request: Request):
     text = update.message.text.encode('utf-8').decode()
     print("got message: ", text)
     if text == "/start":
-        bot_welcome = """
-            Welcome to EhrenAI, your very own Telegram conversational AI developed by Ehren Nwokocha with Meta's Blenderbot400M model.
-        """
-        print(bot_welcome)
+        bot_welcome = """Hey! 👋 I'm EhrenAI 🤖, the brainchild of Ehren Nwokocha 🧑‍💻, supercharged by the open-source 90M-Blenderbot model 🍼. Let's dive into conversations on pretty much anything! 🌚 Unfortunately, for now, I'm contextually challenged and a bit shaky on facts, so spare me the follow-ups and homework rescues 😅.
+
+But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releases. Want a chat? I'm all ears! 🤗✨"""
         await bot.sendMessage(chat_id=chat_id, text=bot_welcome)
     else:
         try:
-            print("generating image")
-            text = re.sub(r"\W", "_", text)
-            url = "https://api.adorable.io/avatars/285/{}.png".format(text.strip())
-            await bot.sendPhoto(chat_id=chat_id, photo=url)
+            if httpx.get('https://ehren12-critzyblenderbot.hf.space/status').status_code == 200:
+                text = re.sub(r"\W", "_", text)
+                r = httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', data={'message': text})
+                print(r.text)
+                await bot.sendMessage(chat_id=chat_id, text=r.text)            
+            else:
+                raise Exception
         except Exception:
-            await bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name")
+            await bot.sendMessage(chat_id=chat_id, text="Oh no! 😕 It seems like I've hit a little bump in the digital road. 🛠️ My message-generating powers seem to be on a coffee break! ☕ Something's a bit wonky with the servers. Please bear with me while my developer works his magic to get things back on track. 🤞 Sorry for the inconvenience! 😥")
     return 'ok'
-            
+    
 
 
 if __name__ == '__main__':
