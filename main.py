@@ -27,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-timeout = httpx.Timeout(120.0, read=None)
+timeout = httpx.Timeout(300.0, read=None)
 
 @app.get('/')
 def index():
@@ -58,9 +58,11 @@ async def respond(request: Request):
     text = update.message.text.encode('utf-8').decode()
     print("got message: ", text)
     if text == "/start":
-        bot_welcome = """Hey! 👋 I'm EhrenAI 🤖, the brainchild of Ehren Nwokocha 🧑‍💻, supercharged by the open-source 90M-Blenderbot model 🍼. Let's dive into conversations on pretty much anything! 🌚 Unfortunately, for now, I'm contextually challenged and a bit shaky on facts, so spare me the follow-ups and homework rescues 😅.
+        bot_welcome = """Hey! 👋 I'm EhrenAI 🤖, the brainchild of Ehren Nwokocha 🧑‍💻, rocking the open-source 400M-Blenderbot model 🍼. Up for convos on anything! 🌚 Just a heads-up: I'm a bit context-challenged and shaky on facts, so tricky follow-up questions or homework rescues might stump me 😅. Oh, and be patient—I'm a 400 million parameter bot running on a single CPU, so my responses might take a while. 🕰️ And my gracefulness might vary. 🤖💨
 
-But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releases. Want a chat? I'm all ears! 🤗✨"""
+No worries, though! 🚀 Exciting features are in the works. Up for a chat? I'm all ears! 🤗✨
+
+Check out my creator's website at https://ehren-website.vercel.app/ for more cool stuff! 🌐👀"""
         await bot.sendMessage(chat_id=chat_id, text=bot_welcome)
     else:
         try:     
