@@ -66,7 +66,7 @@ But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releas
             if httpx.get('https://ehren12-critzyblenderbot.hf.space/status').status_code == 200:
                 text = re.sub(r"\W", "_", text)
                 r = httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
-                print(r.text)
+                print(r.json)
                 await bot.sendMessage(chat_id=chat_id, text=r.text)            
             else:
                 raise Exception
