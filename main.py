@@ -63,9 +63,9 @@ But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releas
         await bot.sendMessage(chat_id=chat_id, text=bot_welcome)
     else:
         try:
-            if httpx.get('https://ehren12-critzyblenderbot.hf.space/status').status_code == 200:
+            if await httpx.get('https://ehren12-critzyblenderbot.hf.space/status').json.status == "OK":
                 text = re.sub(r"\W", "_", text)
-                r = httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
+                r = await httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
                 response = r.text[1:-1]
                 await bot.sendMessage(chat_id=chat_id, text=response)            
             else:
