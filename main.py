@@ -27,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+timeout = httpx.Timeout(120.0, read=None)
 
 @app.get('/')
 def index():
@@ -64,7 +65,7 @@ But hey, fret not! 🚀 Exciting features are on the horizon for upcoming releas
     else:
         try:     
             text = re.sub(r"\W", "_", text)
-            r = await httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text})
+            r = httpx.post('https://ehren12-critzyblenderbot.hf.space/generate-message', json={'message': text}, timeout=timeout)
             response = r.text[1:-1]
             await bot.sendMessage(chat_id=chat_id, text=response)            
         except httpx.ConnectTimeout as exc:
